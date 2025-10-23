@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "d924d8b4-37ad-425a-9866-7ac5c92285cd",
+		"name": "API Users",
+		"description": "Simples API de usuários para estudo dos métodos HTTP e Arquitetura REST.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49506608",
+		"_collection_link": "https://contatosaracsantos-3975966.postman.co/workspace/673813de-d415-4631-81ee-6b1f8741e7e5/collection/49506608-d924d8b4-37ad-425a-9866-7ac5c92285cd?action=share&source=collection_link&creator=49506608"
+	},
+	"item": [
+		{
+			"name": "Listar usuários",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					]
+				},
+				"description": "Lista todos os usuários."
+			},
+			"response": []
+		},
+		{
+			"name": "Listar usuário pelo id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/users/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"1"
+					]
+				},
+				"description": "Lista o usuário pelo id."
+			},
+			"response": []
+		},
+		{
+			"name": "Criar novo usuário",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Sérgio\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					]
+				},
+				"description": "Cria um novo usuário, o id é fornecido de forma automática, passamos no corpo da requisição apenas o restante das informações sobre o novo usuário. É idempotente, porque a cada nova requisição será criado um novo usuário."
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar usuário",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Sara Santos\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"1"
+					]
+				},
+				"description": "Atualiza o usuário pelo id, contudo este método sobrescreve todas as informações do usuário, não é idempotente."
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar parte do usuário",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idade\": 31\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"1"
+					]
+				},
+				"description": "Atualiza somente uma parte do usuário que é passada no corpo da requisição sem sobrescrever o restante das propriedades. Pode ser idempotente como pode não ser, depende da forma de atualização, neste caso ele não está sendo idempotente porque sua chamada não irá resultar em um novo resultado, atualizando a parte somente uma vez. A atualização utilizando PATCH também nos permite inserir uma propriedade nova."
+			},
+			"response": []
+		},
+		{
+			"name": "Excluir usuário",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/users/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"3"
+					]
+				},
+				"description": "Exclui um usuário pelo id. O retorno deste método é o status 204, ou seja, a requisição foi bem realizada com sucesso, mas em seu corpo não há conteúdo."
+			},
+			"response": []
+		}
+	]
+}
