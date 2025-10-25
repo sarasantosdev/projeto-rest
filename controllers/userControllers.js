@@ -28,21 +28,22 @@ export const createUser = async (req, res) => {
         const result = await pool.query('INSERT INTO users (nome) VALUES ($1) RETURNING *', [nome]);
         res.status(201).json(result.rows[0]);
     } catch (err) {
-        res.status(500).json({error: err.message})
+        res.status(500).json({error: err.message});
     }
 }
 
-exports.updateUser = (req, res) => {
-    const id = parseInt(req.params.id);
-    const index = users.findIndex(u => u.id === id);
-
-    if (index === -1){
-        return res.status(404).json({message: 'Usuário não encontrado'});
+export const updateUser = async (req, res) => {
+    const {id} = req.params;
+    const {nome} = req.params;
+    try {
+        const result = await pool.query('UPDATE users SET nome = COALESCE($1, nome) WHERE id = $2 RETURNING *', [nome, id]);
+        if (result.rows.length === 0){
+            return res.status(404).json({message: 'Usuário não encontrado!'});
+        }
+        res.json(result.rows[0]);
+    } catch (err) {
+        res.status(500).json({error: err.message});
     }
-
-    users[index] = {id, ...req.body};
-
-    res.json(users[index]);
 };
 
 exports.deleteUser = (req, res) => {
