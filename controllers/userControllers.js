@@ -35,8 +35,13 @@ export const createUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     const {id} = req.params;
     const {nome} = req.body;
+
+    if (!nome){
+        return res.status(400).json({message: 'PUT requer todos os campos obrigatórios: nome'});
+    }
+    
     try {
-        const result = await pool.query('UPDATE users SET nome = COALESCE($1, nome) WHERE id = $2 RETURNING *', [nome, id]);
+        const result = await pool.query('UPDATE users SET nome = $1  WHERE id = $2 RETURNING *', [nome, id]);
         if (result.rows.length === 0){
             return res.status(404).json({message: 'Usuário não encontrado!'});
         }
