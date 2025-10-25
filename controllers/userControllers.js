@@ -22,15 +22,15 @@ export const getUserById = async (req, res) => {
     }
 };
 
-exports.createUser = (req, res) => {
-    const newUser = req.body;
-    const newId = users.length ? Math.max(...users.map( u => u.id)) + 1 : 1;
-
-    const user = {id: newId, ...newUser};
-    users.push(user);
-
-    res.status(201).json(user);
-};
+export const createUser = async (req, res) => {
+    const {nome} = req.params;
+    try {
+        const result = await pool.query('INSERT INTO users (nome) VALUES ($1) RETURNING *', [nome]);
+        res.status(201).json(result.rows[0]);
+    } catch (err) {
+        res.status(500).json({error: err.message})
+    }
+}
 
 exports.updateUser = (req, res) => {
     const id = parseInt(req.params.id);
