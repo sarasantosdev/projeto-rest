@@ -1,7 +1,12 @@
-const users = require('../data/users');
+import pool from '../config/db.js';
 
-exports.listUsers = (req, res) => {
-    res.json(users);
+export const getUsers = async (req, res) => {
+    try{
+        const result = await pool.query('SELECT * FROM users ORDER BY id ASC');
+        res.json(result.rows);
+    }catch(err){
+        res.status(500).json({error: err.message});
+    }
 };
 
 exports.getUserById = (req, res) =>{
