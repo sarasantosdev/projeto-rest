@@ -45,19 +45,6 @@ exports.updateUser = (req, res) => {
     res.json(users[index]);
 };
 
-exports.patchUser = (req, res) => {
-    const id = parseInt(req.params.id);
-    const user = users.find(u => u.id == id);
-
-    if(!user){
-       return res.status(404).json({message: 'Usuário não encontrado'});
-    }
-
-    Object.assign(user, req.body);
-
-    res.json(user);
-};
-
 exports.deleteUser = (req, res) => {
     const id = parseInt(req.params.id);
     const index = users.findIndex(u => u.id === id);
