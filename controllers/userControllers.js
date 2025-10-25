@@ -23,7 +23,7 @@ export const getUserById = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
-    const {nome} = req.params;
+    const {nome} = req.body;
     try {
         const result = await pool.query('INSERT INTO users (nome) VALUES ($1) RETURNING *', [nome]);
         res.status(201).json(result.rows[0]);
@@ -34,7 +34,7 @@ export const createUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     const {id} = req.params;
-    const {nome} = req.params;
+    const {nome} = req.body;
     try {
         const result = await pool.query('UPDATE users SET nome = COALESCE($1, nome) WHERE id = $2 RETURNING *', [nome, id]);
         if (result.rows.length === 0){
@@ -46,15 +46,15 @@ export const updateUser = async (req, res) => {
     }
 };
 
-exports.deleteUser = (req, res) => {
-    const id = parseInt(req.params.id);
-    const index = users.findIndex(u => u.id === id);
-
-    if (index === -1){
-        res.status(404).json({message: 'Usuário não encontrado'});
-    };
-
-    users.splice(index, 1);
-
-    res.status(204).send();
+export const deleteUser = async (req, res) => {
+    const {id} = req.params;
+    try {
+        const result = await pool.query('DELETE FROM users WHERE id = $1 RETURNING *', [id]);
+        if (result.rows.length === 0){
+            return res.status(404).json({message: 'Usuário não encontrado!'});
+        }
+        res.status(204).json({message: 'Usuário removido com sucesso!'});
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
 };
