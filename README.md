@@ -6,7 +6,7 @@ Inicialmente, os dados eram mantidos em memória (array local), mas a API foi ev
 
 Cada usuário possui os campos `id` e `nome`, e as operações CRUD (`GET`, `POST`, `PUT`, `DELETE`) continuam funcionando da mesma forma — agora refletindo diretamente no banco.
 
-## 🚀 Tecnologias e execução
+## Tecnologias e execução
 
 - **Node.js**: Ambiente de execução JavaScript
 - **Express**: Framework para criação do servidor
@@ -38,7 +38,7 @@ node server.js
 ```
 http://localhost:3000
 ```
-## 🧩 Testando a API
+## Testando a API
 Os endpoints foram testados no Postman.
 Requisições `GET`, `POST`, `PUT`e `DELETE` atualizam os dados no banco em tempo real.
 
@@ -63,10 +63,10 @@ http://localhost:3000/users/1
 ```
 http://localhost:3000/users/1
 ```
-### 🔗 Documentação da API (Postman): 
+### Documentação da API (Postman): 
 https://documenter.getpostman.com/view/49506608/2sB3WjxiGv
 
-## 🧠 Conceitos aprendidos
+## Conceitos aprendidos
 
 Aprendi que uma **API (Application Programming Interface)** é um **conjunto de regras e padrões que permite a comunicação entre dois sistemas**. Para que essa comunicação seja eficiente, ambos os lados (cliente e servidor) utilizam um **formato padrão de dados**, geralmente o **JSON (JavaScript Object Notation)**, por ser leve, fácil de ler e amplamente suportado.
 
