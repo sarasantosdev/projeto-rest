@@ -1,13 +1,18 @@
 # Projeto API RESTFull
 
-Este projeto implementa uma **API de usuários** simples em Node.js/Express. Cada usuário tem os campos `id` e `nome`. Os dados são mantidos **in-memory**, ou seja, armazenados localmente em um array de objetos no arquivo `data/users.js` (não há persistência entre reinícios do servidor).
+Este projeto implementa uma **API RESTfull de usuários em Node.js/Express**, agora integrada a um **banco de dados PostgreSQL.**
 
-A API expõe endopoints REST para **manipulação dos dados** (métodos HTTP: `GET`, `POST`, `PUT`, `PATCH` e `DELETE`) e inclui a lógica de rotas e controladores necessários para a criação, leitura, atualização e remoção de usuários.
+Inicialmente, os dados eram mantidos em memória (array local), mas a API foi evoluída para persistir as informações em um banco real, garantindo durabilidade e escalabilidade.
+
+Cada usuário possui os campos `id` e `nome`, e as operações CRUD (`GET`, `POST`, `PUT`, `DELETE`) continuam funcionando da mesma forma — agora refletindo diretamente no banco.
 
 ## 🚀 Tecnologias e execução
 
-Todo o projeto foi desenvolvido utilizando o **framework Express**, que facilita a criação de servidores e o gerenciamento de rotas no **Node.js**.  
-Com ele foi possível **criar e iniciar o servidor**, além de **definir os endpoints** responsáveis pelas operações da API.
+- **Node.js**: Ambiente de execução JavaScript
+- **Express**: Framework para criação do servidor
+- **PostgreSQL**: Banco de dados relacional
+- **pg(node-postgres)**: Drive para conecar o Node.js ao PostegreSQL
+- **dotenv**: Leitura de variáveis de ambiente (.env)
 
 ## 🔧 Instalação e execução
 
@@ -15,25 +20,48 @@ Com ele foi possível **criar e iniciar o servidor**, além de **definir os endp
 ```
 npm install
 ```
-2. Inicie o servidor
+2. Configure o arquivo `.env`
+Crie um arquivo `.env`na raiz do projeto com as credencias do seu banco
+```
+PGHOST=localhost
+PGUSER=postgres
+PGPASSWORD=sua_senha
+PGDATABASE=api_users
+PGPORT=5432
+PORT=3000
+```
+3. Inicie o servidor
 ```
 node server.js
 ```
-3. O servidor ficará em
+4. O servidor ficará disponível em
 ```
 http://localhost:3000
 ```
 ## 🧩 Testando a API
-Os endpoints foram testados utilizando o Postman, com ele pude verificar todas as requisições, principalmente aquelas que alteram os dados: `POST`, `PUT`, `PATCH`, `DELETE`. Pelo navegador somente é possível realizar a requisição  `GET`, ou seja, somente é possível fazer a leitura dos dados.
+Os endpoints foram testados no Postman.
+Requisições `GET`, `POST`, `PUT`e `DELETE` atualizam os dados no banco em tempo real.
 
 ### Exemplos
-* Listar todos os usuários
+* **Listar todos os usuários (GET)**
 ```
-👉🏽 http://localhost:3000/users
+http://localhost:3000/users
 ```
-* Buscar usuário pelo id
+* **Buscar usuário pelo id (GET)**
 ```
-👉🏽 http://localhost:3000/users/1
+http://localhost:3000/users/1
+```
+* **Criar novo usuário (POST)**
+```
+http://localhost:3000/users
+```
+* **Atualizar usuário (PUT)**
+```
+http://localhost:3000/users/1
+```
+* **Remover usuário (DELETE)**
+```
+http://localhost:3000/users/1
 ```
 ### 🔗 Documentação da API (Postman): 
 https://documenter.getpostman.com/view/49506608/2sB3WjxiGv
@@ -42,12 +70,14 @@ https://documenter.getpostman.com/view/49506608/2sB3WjxiGv
 
 Aprendi que uma **API (Application Programming Interface)** é um **conjunto de regras e padrões que permite a comunicação entre dois sistemas**. Para que essa comunicação seja eficiente, ambos os lados (cliente e servidor) utilizam um **formato padrão de dados**, geralmente o **JSON (JavaScript Object Notation)**, por ser leve, fácil de ler e amplamente suportado.
 
-O acesso e a manipulação dos dados ocorrem por meio dos **métodos HTTP**, como `GET`, `POST`, `PUT`, `PATCH` e `DELETE`.  
+O acesso e a manipulação dos dados ocorrem por meio dos **métodos HTTP**, como `GET`, `POST`, `PUT` e `DELETE`.  
 Cada um deles representa uma ação diferente sobre os recursos da API:
 * `GET`: leitura de dados
 * `POST`: criação
-* `PUT` e `PATCH`: atualização
+* `PUT` : atualização
 * `DELETE`: exclusão
+
+Aprendi a **persistir os dados no banco de dados** permitindo que os dados permaneçam mesmo após reiniciar o servidor.
 
 Entretanto, apenas definir esses métodos não é suficiente: é necessário ter uma **lógica por trás de cada ação**.  
 Essa lógica fica na **camada de controller**, que contém as funções responsáveis por manipular os dados de acordo com a requisição recebida.  
@@ -61,23 +91,19 @@ Esses elementos permitem que **cliente e servidor compreendam o que está sendo 
 
 ## 📂 Estrutura de pastas
 ```bash
-📦 projeto-api
-├── 📁 data
-│   └── users.js         # Array de usuários (dados em memória)
-├── 📁 routes
-│   └── userRoutes.js    # Definição das rotas
+📦 projeto-rest
+├── 📁 config
+│   └── db.js              # Conexão com o banco PostgreSQL
 ├── 📁 controllers
-│   └── userController.js # Lógica de manipulação dos dados
+│   └── userController.js  # Lógica das operações
+├── 📁 routes
+│   └── userRoutes.js           # Definição dos endpoints
+├── .env                   # Variáveis de ambiente
 ├── .gitignore
 ├── package.json
-├── server.js             # Arquivo principal do servidor
+├── server.js              # Inicializa o servidor
 └── README.md
 ```
-## 💭 Próximos passos
-* Integrar a API com um banco de dados real (ex.: PostgreSQL, MongoDB).
-* Configurar ambiente Docker para containerização da aplicação.
-* Implementar validações e tratamento de erros.
-* Adicionar testes automatizados com Jest.
 
 ## Autora:
 
