@@ -14,7 +14,7 @@ Cada usuário possui os campos `id` e `nome`, e as operações CRUD (`GET`, `POS
 - **pg(node-postgres)**: Drive para conecar o Node.js ao PostegreSQL
 - **dotenv**: Leitura de variáveis de ambiente (.env)
 
-## 🔧 Instalação e execução
+## Instalação e execução
 
 1. Instale as dependências
 ```
@@ -88,22 +88,6 @@ Também aprendi que, ao realizar uma requisição, há dois componentes principa
 - **Corpo (body)** – é o conteúdo principal enviado ou recebido, como os dados em formato JSON.
 
 Esses elementos permitem que **cliente e servidor compreendam o que está sendo enviado e recebido**, garantindo uma comunicação padronizada e eficiente.
-
-## 📂 Estrutura de pastas
-```bash
-📦 projeto-rest
-├── 📁 config
-│   └── db.js              # Conexão com o banco PostgreSQL
-├── 📁 controllers
-│   └── userController.js  # Lógica das operações
-├── 📁 routes
-│   └── userRoutes.js           # Definição dos endpoints
-├── .env                   # Variáveis de ambiente
-├── .gitignore
-├── package.json
-├── server.js              # Inicializa o servidor
-└── README.md
-```
 
 ## Autora:
 
