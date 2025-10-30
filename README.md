@@ -1,10 +1,10 @@
 # Projeto API RESTFull
 
-Este projeto implementa uma **API RESTfull de usuários em Node.js/Express**, agora integrada a um **banco de dados PostgreSQL.**
+Este projeto implementa uma API RESTFull de usuários em Node.js/Express, agora integrada ao banco de dados PostgreSQL utilizando o Prisma ORM.
 
-Inicialmente, os dados eram mantidos em memória (array local), mas a API foi evoluída para persistir as informações em um banco real, garantindo durabilidade e escalabilidade.
+Inicialmente, os dados eram mantidos em memória (array local), depois foram persistidos diretamente no PostgreSQL via pg, e finalmente evoluímos para uma camada ORM com Prisma, tornando o acesso ao banco mais seguro, organizado e produtivo.
 
-Cada usuário possui os campos `id` e `nome`, e as operações CRUD (`GET`, `POST`, `PUT`, `DELETE`) continuam funcionando da mesma forma — agora refletindo diretamente no banco.
+Cada usuário possui os campos id e nome, e as operações CRUD (GET, POST, PUT, DELETE) continuam funcionando da mesma forma — agora refletindo diretamente no banco via Prisma Client.
 
 ## Tecnologias e execução
 
@@ -12,6 +12,7 @@ Cada usuário possui os campos `id` e `nome`, e as operações CRUD (`GET`, `POS
 - **Express**: Framework para criação do servidor
 - **PostgreSQL**: Banco de dados relacional
 - **pg(node-postgres)**: Drive para conecar o Node.js ao PostegreSQL
+- **Prisma ORM – mapeamento objeto-relacional**: Manipular o banco de forma mais intuitiva
 - **dotenv**: Leitura de variáveis de ambiente (.env)
 
 ## Instalação e execução
@@ -29,12 +30,27 @@ PGPASSWORD=sua_senha
 PGDATABASE=api_users
 PGPORT=5432
 PORT=3000
+
+DATABASE_URL="postgresql://postgres:sua_senha@localhost:5432/api_users"
 ```
-3. Inicie o servidor
+
+3. Inicialize o Prisma
+```
+npx prisma init
+```
+4. Caso o banco de dados já exista, traga o para o Prisma
+```
+npx prisma db pull
+```
+5. Gere o Prisma Client
+```
+npx prisma generate
+```
+6. Inicie o servidor
 ```
 node server.js
 ```
-4. O servidor ficará disponível em
+7. O servidor ficará disponível em
 ```
 http://localhost:3000
 ```
@@ -68,26 +84,24 @@ https://documenter.getpostman.com/view/49506608/2sB3WjxiGv
 
 ## Conceitos aprendidos
 
-Aprendi que uma **API (Application Programming Interface)** é um **conjunto de regras e padrões que permite a comunicação entre dois sistemas**. Para que essa comunicação seja eficiente, ambos os lados (cliente e servidor) utilizam um **formato padrão de dados**, geralmente o **JSON (JavaScript Object Notation)**, por ser leve, fácil de ler e amplamente suportado.
+Durante o desenvolvimento, aprendi que uma API (Application Programming Interface) é um conjunto de regras que permite a comunicação entre sistemas.
+Essa comunicação acontece por meio de requisições HTTP, utilizando formatos padronizados como JSON.
 
-O acesso e a manipulação dos dados ocorrem por meio dos **métodos HTTP**, como `GET`, `POST`, `PUT` e `DELETE`.  
-Cada um deles representa uma ação diferente sobre os recursos da API:
-* `GET`: leitura de dados
-* `POST`: criação
-* `PUT` : atualização
-* `DELETE`: exclusão
+📡 Métodos HTTP
+- GET: leitura de dados
+- POST: criação
+- PUT: atualização
+- DELETE: exclusão
 
-Aprendi a **persistir os dados no banco de dados** permitindo que os dados permaneçam mesmo após reiniciar o servidor.
+As funções de controle (controllers) implementam a lógica de cada ação e são conectadas às rotas (endpoints), que representam o caminho entre o cliente e o servidor.
 
-Entretanto, apenas definir esses métodos não é suficiente: é necessário ter uma **lógica por trás de cada ação**.  
-Essa lógica fica na **camada de controller**, que contém as funções responsáveis por manipular os dados de acordo com a requisição recebida.  
-Após a criação dos controllers, eles são **conectados às rotas (endpoints)**, que representam o caminho entre o cliente e o servidor, indicando qual recurso está sendo solicitado.
+Além disso, compreendi que:
 
-Também aprendi que, ao realizar uma requisição, há dois componentes principais:
-- **Cabeçalho HTTP (header)** – contém informações (metadados) sobre a requisição ou resposta, como tipo de conteúdo (`Content-Type`), status (`200 OK`, `404 Not Found`), e permissões de acesso.
-- **Corpo (body)** – é o conteúdo principal enviado ou recebido, como os dados em formato JSON.
+- O Prisma ORM abstrai as consultas SQL, transformando-as em código JavaScript/TypeScript mais intuitivo.
 
-Esses elementos permitem que **cliente e servidor compreendam o que está sendo enviado e recebido**, garantindo uma comunicação padronizada e eficiente.
+- Ele gera automaticamente o Prisma Client, responsável por manipular os dados da aplicação com segurança e tipagem forte.
+
+- As migrações e introspecções permitem sincronizar o modelo da aplicação com o banco real, garantindo consistência entre código e dados.
 
 ## Autora:
 
