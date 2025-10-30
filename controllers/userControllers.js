@@ -1,9 +1,9 @@
-import pool from '../config/db.js';
+import prisma from '../generated/prisma/client.js';
 
 export const getUsers = async (req, res) => {
     try{
-        const result = await pool.query('SELECT * FROM users ORDER BY id ASC');
-        res.json(result.rows);
+        const users = await prisma.users.findMany();
+        res.json(users);
     }catch(err){
         res.status(500).json({error: err.message});
     }
@@ -12,11 +12,13 @@ export const getUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
     const {id} = req.params;
     try {
-        const result = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
-        if (result.rows.length === 0){
-            return res.status(404).json({message: 'Usuário não encontrado!'});
+        const user = await prisma.users.findUnique({
+            where: {id: parseInt(id)},
+        });
+        if (!user){
+            return res.status(404).json({message: 'Usuário não encontrado'});
         }
-        res.json(result.rows[0]);
+        res.json(user)
     } catch (err) {
         res.status(500).json({error: err.message});
     }
@@ -25,8 +27,10 @@ export const getUserById = async (req, res) => {
 export const createUser = async (req, res) => {
     const {nome} = req.body;
     try {
-        const result = await pool.query('INSERT INTO users (nome) VALUES ($1) RETURNING *', [nome]);
-        res.status(201).json(result.rows[0]);
+        const newUser = await prisma.users.create({
+            data: {nome},
+        });
+        res.status(201).json(newUser);
     } catch (err) {
         res.status(500).json({error: err.message});
     }
@@ -41,11 +45,11 @@ export const updateUser = async (req, res) => {
     }
     
     try {
-        const result = await pool.query('UPDATE users SET nome = $1  WHERE id = $2 RETURNING *', [nome, id]);
-        if (result.rows.length === 0){
-            return res.status(404).json({message: 'Usuário não encontrado!'});
-        }
-        res.json(result.rows[0]);
+        const user = await prisma.users.update({
+            where: {id: parseInt(id)},
+            data: {nome},
+        });
+        res.json(user);
     } catch (err) {
         res.status(500).json({error: err.message});
     }
@@ -54,11 +58,10 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
     const {id} = req.params;
     try {
-        const result = await pool.query('DELETE FROM users WHERE id = $1 RETURNING *', [id]);
-        if (result.rows.length === 0){
-            return res.status(404).json({message: 'Usuário não encontrado!'});
-        }
-        res.status(204).json({message: 'Usuário removido com sucesso!'});
+      const user = await prisma.users.delete({
+        where:{id: parseInt(id)},
+      });
+      res.status(204).json({message: 'Usuário removido com sucesso!'});
     } catch (err) {
         res.status(500).json({error: err.message});
     }
